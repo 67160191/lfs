@@ -2,6 +2,7 @@
 # ==============================================================================
 # Linux From Scratch (LFS) 13.1-systemd - Chapter 8: Installing Basic System Software
 # Automated Complete Installation Script (Test suites skipped for maximum speed)
+# LFS Chapter 8 chroot runner: execute this script from inside the LFS chroot.
 # ==============================================================================
 set -eo pipefail
 
@@ -11,6 +12,10 @@ set -eo pipefail
 SOURCES_DIR="${SOURCES_DIR:-/sources}"
 MAKEFLAGS="${MAKEFLAGS:--j$(nproc)}"
 export MAKEFLAGS
+
+# Inside LFS chroot, / is already the LFS root. Do not use an external $LFS path.
+unset LFS 2>/dev/null || true
+export PATH=/usr/bin:/usr/sbin:/bin:/sbin
 LFS_TIMEZONE="${LFS_TIMEZONE:-UTC}"
 GROFF_PAGE="${GROFF_PAGE:-A4}"
 ROOT_PASSWORD="${ROOT_PASSWORD:-root}"
@@ -128,7 +133,7 @@ build_glibc_2_44() {
 
     rm -f /usr/sbin/nscd
 
-    systemctl disable --now nscd
+    systemctl disable --now nscd 2>/dev/null || true
 
     make DESTDIR=$PWD/dest install
     install -vm755 dest/usr/lib/*.so.* /usr/lib
@@ -2385,7 +2390,7 @@ build_systemd_261_2() {
 
     systemd-machine-id-setup
 
-    systemctl preset-all
+    systemctl preset-all 2>/dev/null || true
 
     cd "$SOURCES_DIR"
     rm -rf "systemd-261.2"
@@ -2779,7 +2784,7 @@ main() {
     local t_start=$(date +%s)
 
     for item in "${PACKAGES[@]}"; do
-        ((current_idx++))
+        current_idx=$((current_idx + 1))
         IFS=":" read -r sec fn name <<< "$item"
 
         if [ -n "$run_only" ]; then

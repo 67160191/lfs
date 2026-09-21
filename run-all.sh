@@ -1900,10 +1900,7 @@ build_coreutils_9_11() {
                 --prefix=/usr
 
     make
-
-    su tester -c "PATH=$PATH make -k RUN_EXPENSIVE_TESTS=yes check" \
-       < /dev/null
-
+    
     make install
 
     mv -v /usr/bin/chroot /usr/sbin

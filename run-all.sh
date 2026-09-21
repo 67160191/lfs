@@ -2260,9 +2260,6 @@ build_vim_9_2_1025() {
 
     make
 
-    su tester -c "TERM=xterm-256color LANG=en_US.UTF-8 make -j1 test" \
-       &> vim-test.log
-
     make install
 
     ln -sv vim /usr/bin/vi

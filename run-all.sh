@@ -2300,16 +2300,16 @@ build_markupsafe_3_0_3() {
         log_err "Tarball markupsafe-3.0.3.tar.gz not found in $SOURCES_DIR!"
         return 1
     fi
-    rm -rf "MarkupSafe-3.0.3"
+    rm -rf "markupSafe-3.0.3"
     tar -xf "markupsafe-3.0.3.tar.gz"
-    cd "MarkupSafe-3.0.3"
+    cd "markupSafe-3.0.3"
 
     pip3 wheel -w dist --no-cache-dir --no-build-isolation --no-deps $PWD
 
     pip3 install --no-index --find-links dist Markupsafe
 
     cd "$SOURCES_DIR"
-    rm -rf "MarkupSafe-3.0.3"
+    rm -rf "markupSafe-3.0.3"
     log_info "Completed MarkupSafe-3.0.3 successfully!"
 }
 
